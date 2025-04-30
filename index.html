@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Letter Number Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        #answerSheet {
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            margin-top: 20px;
+            width: 100%;
+            transform: translateY(10px);
+        }
+
+        #answerSheet:hover {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+            box-sizing: border-box;
+            background-color: #f3f4f6;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                flex-direction: row;
+                justify-content: space-around;
+                align-items: flex-start;
+            }
+
+            #answerSheet {
+                width: 45%;
+                margin-top: 0;
+                margin-left: 3rem;
+            }
+
+            .quiz-container {
+                width: 45%;
+            }
+        }
+
+        .quiz-container {
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 6px 10px -2px rgba(0, 0, 0, 0.15), 0 3px 7px -2px rgba(0, 0, 0, 0.07);
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 36rem;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            margin-bottom: 2rem;
+            border: 1px solid #e5e7eb;
+        }
+
+        .quiz-container:hover {
+            transform: scale(1.04);
+            box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 8px -3px rgba(0, 0, 0, 0.08);
+        }
+
+        .input-group {
+            margin-bottom: 2rem;
+        }
+
+        .input-group label {
+            display: block;
+            color: #4b5563;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .input-group label:focus-within {
+            color: #6b7280;
+        }
+
+        .quiz-container p{
+             color: #1e293b;
+             font-size: 1.25rem;
+             font-weight: 700;
+             margin-bottom: 1.5rem;
+             text-align: center;
+             letter-spacing: 0.05rem;
+        }
+
+        input[type="text"] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 0.5rem;
+            border: 2px solid #d1d5db;
+            outline: none;
+            font-size: 1rem;
+            color: #374151;
+            transition: border-color 0.3s ease-in-out, shadow-sm 0.3s ease-in-out;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
+        }
+
+        input[type="text"]:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+
+        input[type="text"]::placeholder {
+            color: #9ca3af;
+            font-weight: 400;
+        }
+
+        .warning-message {
+            color: #dc2626;
+            font-size: 0.9rem;
+            font-style: italic;
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #fee2e2;
+            border-radius: 0.5rem;
+            border: 1px solid #fecaca;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .check-button {
+            padding: 1rem 2.2rem;
+            border-radius: 0.75rem;
+            background-image: linear-gradient(to right, #4f46e5, #6366f1);
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            border: none;
+            outline: none;
+            box-shadow: 0 5px 9px -3px rgba(0, 0, 0, 0.15), 0 2px 5px -2px rgba(0, 0, 0, 0.07);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background-image 0.3s ease-in-out;
+        }
+
+        .check-button:hover {
+            transform: scale(1.06);
+            box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.2), 0 3px 7px -2px rgba(0, 0, 0, 0.1);
+            background-image: linear-gradient(to right, #4338ca, #4f46e5);
+        }
+
+        .check-button:active {
+            transform: scale(1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            background-image: linear-gradient(to right, #4338ca, #4f46e5);
+        }
+
+        #answerSheet {
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            margin-top: 3rem;
+            width: 100%;
+            transform: translateY(15px);
+        }
+
+        #answerSheet:hover {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #answerSheet h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #4b5563;
+            margin-bottom: 1.5rem;
+            transition: color 0.3s ease-in-out;
+        }
+
+        #answerSheet:hover h3{
+             color: #6b7280;
+        }
+
+        .answer-table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            margin-bottom: 1rem;
+        }
+
+        .answer-table thead tr {
+            background-color: #f0f0f0;
+            color: #6b7280;
+            font-weight: 600;
+            text-align: center;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .answer-table thead tr:hover {
+            background-color: #e0e0e0;
+        }
+
+
+        .answer-table th, .answer-table td {
+            padding: 0.8rem;
+            border: 1px solid #e0e0e0;
+            text-align: center;
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+        }
+
+        .answer-table td{
+            color: #4b5563;
+            font-weight: 500;
+        }
+
+        .answer-table tr:nth-child(even) {
+            background-color: #f7fafc;
+        }
+
+        .answer-table tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+
+        .answer-table tr:hover td {
+            background-color: #eff6ff;
+            color: #3b82f6;
+        }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .toggle-label {
+            margin-right: 1rem;
+            color: #4b5563;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #3b82f6;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #3b82f6;
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-r from-blue-100 to-purple-100">
+    <div class="container">
+        <div class = "quiz-container">
+            <h1 class="text-3xl font-semibold text-blue-700 mb-8 text-center">Letter-Number Quiz</h1>
+             <div class="toggle-container">
+                <label class="toggle-label">Enable Timer</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="timerToggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="input-group">
+                <label for="letterInput">Enter the number for letter:</label>
+                <p id="questionLetter"></p>
+                <input type="text" id="letterInput" placeholder="Enter number...">
+            </div>
+            <p id="warning" class="warning-message" style="display: none;"></p>
+            <div class="flex items-center justify-center">
+                <button id="checkButton" class="check-button">Check Answer</button>
+            </div>
+        </div>
+        <div id="answerSheet" class="text-center">
+            <h3>Answer Sheet (Hover to View)</h3>
+            <table class="answer-table">
+                <thead>
+                    <tr>
+                        <th>Letter</th>
+                        <th>Number</th>
+                        <th>Letter</th>
+                        <th>Number</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>A</td>
+                        <td>1</td>
+                        <td>N</td>
+                        <td>14</td>
+                    </tr>
+                    <tr>
+                        <td>B</td>
+                        <td>2</td>
+                        <td>O</td>
+                        <td>15</td>
+                    </tr>
+                    <tr>
+                        <td>C</td>
+                        <td>3</td>
+                        <td>P</td>
+                        <td>16</td>
+                    </tr>
+                    <tr>
+                        <td>D</td>
+                        <td>4</td>
+                        <td>Q</td>
+                        <td>17</td>
+                    </tr>
+                    <tr>
+                        <td>E</td>
+                        <td>5</td>
+                        <td>R</td>
+                        <td>18</td>
+                    </tr>
+                    <tr>
+                        <td>F</td>
+                        <td>6</td>
+                        <td>S</td>
+                        <td>19</td>
+                    </tr>
+                    <tr>
+                        <td>G</td>
+                        <td>7</td>
+                        <td>T</td>
+                        <td>20</td>
+                    </tr>
+                    <tr>
+                        <td>H</td>
+                        <td>8</td>
+                        <td>U</td>
+                        <td>21</td>
+                    </tr>
+                    <tr>
+                        <td>I</td>
+                        <td>9</td>
+                        <td>V</td>
+                        <td>22</td>
+                    </tr>
+                    <tr>
+                        <td>J</td>
+                        <td>10</td>
+                        <td>W</td>
+                        <td>23</td>
+                    </tr>
+                    <tr>
+                        <td>K</td>
+                        <td>11</td>
+                        <td>X</td>
+                        <td>24</td>
+                    </tr>
+                    <tr>
+                        <td>L</td>
+                        <td>12</td>
+                        <td>Y</td>
+                        <td>25</td>
+                    </tr>
+                    <tr>
+                        <td>M</td>
+                        <td>13</td>
+                        <td>Z</td>
+                        <td>26</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const letterInput = document.getElementById("letterInput");
+        const warning = document.getElementById("warning");
+        const checkButton = document.getElementById("checkButton");
+        const questionLetterDisplay = document.getElementById("questionLetter");
+        const timerToggle = document.getElementById("timerToggle");
+
+        const letterToNumber = {
+            'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6, 'g': 7, 'h': 8, 'i': 9, 'j': 10,
+            'k': 11, 'l': 12, 'm': 13, 'n': 14, 'o': 15, 'p': 16, 'q': 17, 'r': 18, 's': 19, 't': 20,
+            'u': 21, 'v': 22, 'w': 23, 'x': 24, 'y': 25, 'z': 26
+        };
+
+        const letterHints = {
+            'a': "No specific hint available.",
+            'b': "No specific hint available.",
+            'c': "No specific hint available.",
+            'd': "No specific hint available.",
+            'e': "EJOTY”. Rank of E is 5",
+            'f': "F for Fix and Fix and “Six” are rhyming words",
+            'g': "Everybody knows G-7 Nations.",
+            'h': "H looks like 8",
+            'i': "In cursive writing, it looks like 9",
+            'j': "“EJOTY”. Rank of J is 10.",
+            'k': "J & K = Jammu and Kashmir J-10 & K-11",
+            'l': "Speak together “L Twelve” Sounds like Homonyms",
+            'm': "Middle most letter in the series is “M” 26/2 =13",
+            'n': "November 14 is Children`s Day.",
+            'o': "“EJOTY”. Rank of O is 15.",
+            'p': "Reverse of P looks like 6 – P-16",
+            'q': "Q – Queen 17 pe Khatra (खतरा)",
+            'r': "R – Raja, Raja is one year older than Queen / राजा, रानी से एक वर्ष बड़ा है 17+1 = 18",
+            's': "UNISSSS – 19 – Stress on S / S for सैनिक – क्वीन -17 , राजा – 18 के बाद सैनिक -19",
+            't': "“EJOTY”. Rank of T is 20/ T-20 Cricket Match",
+            'u': "U are a graduate(21) – Normally a person complete Graduation at the age of 21",
+            'v': "V for Victory. A person requires two fingers to represent Victory. V- 22",
+            'w': "90 degree Anti-clock wise letter “W”, it looks like 3, its rank is “23”.",
+            'x': "X, it is being divided into four parts. Rank of letter “X” is 24.",
+            'y': "“EJOTY”. Rank of letter “Y” is 25.",
+            'z': "Z is last Word – 26"
+        };
+
+        let currentLetter = '';
+        let correctAnswerGiven = true;
+        let askedLetters = []; // Array to store asked letters
+        let quizEnded = false;
+        let timerInterval;
+        let timeLeft = 5;
+        let timerEnabled = false;
+        let firstQuestion = true; // Add this line
+
+        timerToggle.addEventListener('change', function() {
+            timerEnabled = this.checked;
+            if (!timerEnabled) {
+                clearInterval(timerInterval);
+                timeLeft = 5;
+                warning.textContent = ''; // Clear warning message
+                warning.style.display = 'none';
+            }
+        });
+
+        function getRandomLetter() {
+            const letters = Object.keys(letterToNumber);
+            let availableLetters = letters.filter(letter => !askedLetters.includes(letter)); //filter the letters
+
+            if (availableLetters.length === 0) {
+                askedLetters = []; // Reset the asked letters array
+                quizEnded = false; // Reset the quizEnded flag
+                return getRandomLetter(); //restart the quiz
+            }
+            const randomLetter = availableLetters[Math.floor(Math.random() * availableLetters.length)];
+            return randomLetter;
+        }
+
+        function checkAnswer() {
+            const inputLetter = letterInput.value.toLowerCase();
+
+            if (!inputLetter) {
+                warning.textContent = "Please enter a number.";
+                warning.style.display = "block";
+                return;
+            }
+            const inputNumber = parseInt(inputLetter, 10);
+            if (isNaN(inputNumber) || inputNumber < 1 || inputNumber > 26) {
+                warning.textContent = "Invalid input. Please enter a number from 1-26.";
+                warning.style.display = "block";
+                letterInput.value = '';
+                return;
+            }
+
+            warning.style.display = "none";
+
+            if (timerEnabled) {
+                clearInterval(timerInterval);
+                timeLeft = 5;
+            }
+
+            const expectedNumber = letterToNumber[currentLetter];
+
+            if (inputNumber === expectedNumber) {
+                correctAnswerGiven = true;
+                letterInput.value = '';
+                askedLetters.push(currentLetter); // Add the letter to the asked letters array
+                currentLetter = getRandomLetter();
+                if (quizEnded) {
+                    questionLetterDisplay.textContent = "Quiz Ended! You have answered all letters. Restarting Quiz...";
+                    letterInput.disabled = false;
+                    checkButton.disabled = false;
+                    setTimeout(() => {
+                        currentLetter = getRandomLetter();
+                        questionLetterDisplay.textContent = currentLetter.toUpperCase();
+                         if (timerEnabled) {
+                            startTimer();
+                        }
+                    }, 2000);
+
+                    return;
+                }
+                else {
+                    questionLetterDisplay.textContent = currentLetter.toUpperCase();
+                     if (timerEnabled) {
+                        startTimer();
+                    }
+                }
+            } else {
+                const hint = letterHints[currentLetter] || "No hint available for this letter.";
+                warning.textContent = `Wrong answer! The correct answer for ${currentLetter.toUpperCase()} is ${expectedNumber}.  Hint: ${hint} Please try again.`;
+                warning.style.display = "block";
+                correctAnswerGiven = false;
+                letterInput.value = '';
+                if (timerEnabled) {
+                    startTimer();
+                }
+            }
+        }
+
+        function startTimer() {
+            timeLeft = 5;
+            timerInterval = setInterval(() => {
+                if (timeLeft > 0) {
+                    timeLeft--;
+                } else {
+                    clearInterval(timerInterval);
+                    const hint = letterHints[currentLetter] || "No hint available for this letter.";
+                    warning.textContent = `Time's up! The correct answer for ${currentLetter.toUpperCase()} is ${letterToNumber[currentLetter]}. Hint: ${hint} Please try again.`;
+                    warning.style.display = "block";
+                    correctAnswerGiven = false;
+                    letterInput.value = '';
+                    timeLeft = 5;
+                    currentLetter = getRandomLetter();
+                    if (!quizEnded)
+                    {
+                         questionLetterDisplay.textContent = currentLetter.toUpperCase();
+                     if (timerEnabled) {
+                        startTimer();
+                    }
+                    }
+
+                }
+            }, 1000);
+        }
+
+        checkButton.addEventListener("click", () => {
+            if (timerEnabled) {
+                clearInterval(timerInterval);
+                startTimer();
+            }
+            checkAnswer();
+        });
+
+        letterInput.addEventListener("keypress", (event) => {
+            if (event.key === "Enter") {
+                if (timerEnabled) {
+                    clearInterval(timerInterval);
+                    startTimer();
+                }
+                checkAnswer();
+            }
+        });
+
+        // Initial question on load
+        currentLetter = getRandomLetter();
+        if (!quizEnded) {
+            questionLetterDisplay.textContent = currentLetter.toUpperCase();
+        }
+
+        if (timerEnabled && firstQuestion) { // Start timer only if timer is enabled and it's the first question
+            startTimer();
+            firstQuestion = false; // Set firstQuestion to false after starting the timer
+        }
+    </script>
+</body>
+</html>
