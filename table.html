@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Multiplication Table Quiz</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f4f4f4;
+        padding: 30px;
+        max-width: 600px;
+        margin: auto;
+      }
+
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+
+      .quiz-box {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      label {
+        display: block;
+        margin-top: 15px;
+        font-weight: bold;
+      }
+
+      input[type="number"] {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+        font-size: 16px;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      .question {
+        margin-top: 20px;
+        font-size: 20px;
+        font-weight: bold;
+        text-align: center;
+      }
+
+      .result {
+        margin-top: 10px;
+        text-align: center;
+        font-size: 18px;
+      }
+
+      .correct {
+        color: green;
+      }
+
+      .wrong {
+        color: red;
+      }
+
+      .score {
+        margin-top: 10px;
+        font-weight: bold;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🧠 Multiplication Table Quiz</h1>
+
+    <div class="quiz-box">
+      <label for="rangeInput">Choose Maximum Number (e.g., 12):</label>
+      <input type="number" id="rangeInput" min="2" max="20" value="12" />
+
+      <button onclick="startQuiz()">Start Quiz</button>
+
+      <div class="question" id="questionBox"></div>
+      <input
+        type="number"
+        id="answerInput"
+        onkeypress="checkAnswer(event)"
+        placeholder="Enter answer..."
+        style="display: none"
+      />
+
+      <div class="result" id="resultBox"></div>
+      <div class="score" id="scoreBox"></div>
+    </div>
+
+    <script>
+      let questions = [];
+      let currentQuestion = 0;
+      let correctAnswers = 0;
+
+      function generateQuestions(max) {
+        let q = [];
+        for (let i = 2; i <= max; i++) {
+          for (let j = 2; j <= 9; j++) {
+            if (i % 10 !== 0 && j % 10 !== 0) {
+              // avoid multiples of 10
+              q.push({ a: i, b: j });
+            }
+          }
+        }
+        return shuffleArray(q);
+      }
+
+      function shuffleArray(array) {
+        return array.sort(() => Math.random() - 0.5);
+      }
+
+      function startQuiz() {
+        const max = parseInt(document.getElementById("rangeInput").value);
+        if (isNaN(max) || max < 2 || max > 20) {
+          alert("Please enter a number between 2 and 20.");
+          return;
+        }
+
+        questions = generateQuestions(max);
+        currentQuestion = 0;
+        correctAnswers = 0;
+
+        document.getElementById("answerInput").style.display = "block";
+        document.getElementById("answerInput").value = "";
+        document.getElementById("resultBox").innerText = "";
+        document.getElementById("scoreBox").innerText = "";
+
+        showNextQuestion();
+      }
+
+      function showNextQuestion() {
+        if (currentQuestion >= questions.length) {
+          endQuiz();
+          return;
+        }
+
+        const q = questions[currentQuestion];
+        document.getElementById(
+          "questionBox"
+        ).innerText = `What is ${q.a} × ${q.b}?`;
+        document.getElementById("answerInput").focus();
+      }
+
+      function checkAnswer(e) {
+        if (e.key !== "Enter") return;
+
+        const answer = parseInt(document.getElementById("answerInput").value);
+        const q = questions[currentQuestion];
+
+        if (answer === q.a * q.b) {
+          document.getElementById("resultBox").innerText = "✅ Correct!";
+          document.getElementById("resultBox").className = "result correct";
+          correctAnswers++;
+        } else {
+          document.getElementById(
+            "resultBox"
+          ).innerText = `❌ Wrong! Correct answer is ${q.a * q.b}`;
+          document.getElementById("resultBox").className = "result wrong";
+        }
+
+        document.getElementById(
+          "scoreBox"
+        ).innerText = `Score: ${correctAnswers}/${questions.length}`;
+
+        currentQuestion++;
+        document.getElementById("answerInput").value = "";
+        setTimeout(showNextQuestion, 1000);
+      }
+
+      function endQuiz() {
+        document.getElementById("questionBox").innerText = "🎉 Quiz Completed!";
+        document.getElementById("answerInput").style.display = "none";
+        document.getElementById("resultBox").innerText = "";
+        document.getElementById("scoreBox").innerText += `\nAccuracy: ${(
+          (correctAnswers / questions.length) *
+          100
+        ).toFixed(1)}%`;
+      }
+    </script>
+  </body>
+</html>
