@@ -1,28 +1,45 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Letter Number Quiz</title>
+    <title>Modern Letter-Number Quiz</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
     <style>
       body {
         font-family: "Inter", sans-serif;
+        background: linear-gradient(
+          135deg,
+          #1e3a8a,
+          #7e22ce,
+          #166534
+        ); /* Deep blue -> Purple -> Green gradient */
+        background-attachment: fixed; /* Fixes background during scroll */
+        overflow-x: hidden; /* Prevents horizontal scroll */
       }
 
       #answerSheet {
         opacity: 0;
-        transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        transition:
+          opacity 0.4s ease-in-out,
+          transform 0.4s ease-in-out;
         margin-top: 20px;
         width: 100%;
         transform: translateY(10px);
+        background: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
+        backdrop-filter: blur(10px); /* Glass effect */
+        border-radius: 1rem;
+        padding: 1.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border */
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); /* Outer glow */
       }
+
       #answerSheet:hover {
         opacity: 1;
         transform: translateY(0);
@@ -35,42 +52,48 @@
         min-height: 100vh;
         padding: 2rem;
         box-sizing: border-box;
-        background-color: #f3f4f6;
+        gap: 2rem; /* Space between main elements */
       }
 
       @media (min-width: 768px) {
         .container {
           flex-direction: row;
-          justify-content: space-around;
+          justify-content: center; /* Center both elements horizontally */
           align-items: flex-start;
+          padding: 3rem; /* More padding on larger screens */
         }
         #answerSheet {
-          width: 45%;
+          width: 40%; /* Adjust width for side-by-side layout */
           margin-top: 0;
-          margin-left: 3rem;
+          margin-left: 2rem; /* Space between quiz and sheet */
         }
         .quiz-container {
-          width: 45%;
+          width: 45%; /* Adjust width for side-by-side layout */
         }
       }
 
       .quiz-container {
-        background-color: white;
-        border-radius: 1rem;
-        box-shadow: 0 6px 10px -2px rgba(0, 0, 0, 0.15),
-          0 3px 7px -2px rgba(0, 0, 0, 0.07);
+        background: rgba(255, 255, 255, 0.15); /* Semi-transparent white */
+        backdrop-filter: blur(12px); /* Glass effect */
+        border-radius: 1.5rem;
+        box-shadow:
+          0 10px 30px -10px rgba(0, 0, 0, 0.3),
+          0 4px 10px -5px rgba(0, 0, 0, 0.1);
         padding: 2.5rem;
         width: 100%;
         max-width: 36rem;
-        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        transition:
+          transform 0.3s ease-in-out,
+          box-shadow 0.3s ease-in-out;
         margin-bottom: 2rem;
-        border: 1px solid #e5e7eb;
+        border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border */
       }
 
       .quiz-container:hover {
-        transform: scale(1.04);
-        box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.1),
-          0 4px 8px -3px rgba(0, 0, 0, 0.08);
+        transform: translateY(-5px); /* Lift slightly on hover */
+        box-shadow:
+          0 15px 40px -10px rgba(0, 0, 0, 0.4),
+          0 6px 15px -5px rgba(0, 0, 0, 0.2);
       }
 
       .input-group {
@@ -79,7 +102,7 @@
 
       .input-group label {
         display: block;
-        color: #4b5563;
+        color: #e2e8f0; /* Light gray text */
         font-size: 1.1rem;
         font-weight: 600;
         margin-bottom: 0.75rem;
@@ -87,16 +110,18 @@
       }
 
       .input-group label:focus-within {
-        color: #6b7280;
+        color: #f8fafc; /* Slightly lighter on focus */
       }
 
       .quiz-container p {
-        color: #1e293b;
-        font-size: 1.25rem;
+        color: #f0f9ff; /* Very light blue/cyan text */
+        font-size: 1.5rem; /* Slightly smaller */
         font-weight: 700;
         margin-bottom: 1.5rem;
         text-align: center;
         letter-spacing: 0.05rem;
+        font-family:
+          "JetBrains Mono", monospace; /* Monospace for letter display */
       }
 
       input[type="text"] {
@@ -104,93 +129,127 @@
         -moz-appearance: none;
         appearance: none;
         width: 100%;
-        padding: 0.8rem;
-        border-radius: 0.5rem;
-        border: 2px solid #d1d5db;
+        padding: 0.9rem 1.2rem; /* Increased padding */
+        border-radius: 0.75rem; /* Slightly rounder corners */
+        border: 2px solid rgba(255, 255, 255, 0.3); /* Lighter border */
         outline: none;
-        font-size: 1rem;
-        color: #374151;
-        transition: border-color 0.3s ease-in-out, shadow-sm 0.3s ease-in-out;
-        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
+        font-size: 1.1rem;
+        color: #f1f5f9; /* Light text inside input */
+        background: rgba(0, 0, 0, 0.2); /* Darker input background */
+        transition:
+          border-color 0.3s ease-in-out,
+          box-shadow 0.3s ease-in-out,
+          background-color 0.3s ease-in-out;
+        box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.2); /* Inner shadow */
       }
 
       input[type="text"]:focus {
-        border-color: #3b82f6;
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        border-color: #818cf8; /* Focus border color */
+        box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.2); /* Focus glow */
+        background: rgba(0, 0, 0, 0.25); /* Slightly darker on focus */
       }
 
       input[type="text"]::placeholder {
-        color: #9ca3af;
+        color: #94a3b8; /* Muted placeholder */
         font-weight: 400;
       }
 
       .warning-message {
-        color: #dc2626;
-        font-size: 0.9rem;
-        font-style: italic;
+        color: #fca5a5; /* Light red text */
+        font-size: 0.95rem; /* Slightly larger */
+        font-style: normal; /* Normal font style */
         margin-top: 1rem;
-        padding: 1rem;
-        background-color: #fee2e2;
+        padding: 0.8rem 1rem; /* Adjusted padding */
+        background: rgba(239, 68, 68, 0.15); /* Reddish background */
         border-radius: 0.5rem;
-        border: 1px solid #fecaca;
+        border: 1px solid rgba(239, 68, 68, 0.3); /* Reddish border */
         animation: fadeIn 0.3s ease-in-out;
+        backdrop-filter: blur(5px); /* Slight blur inside warning */
+        text-align: center; /* Center text */
+      }
+
+      .warning-message.bg-green-100 {
+        background: rgba(34, 197, 94, 0.15); /* Greenish background */
+        border-color: rgba(34, 197, 94, 0.3); /* Greenish border */
+        color: #a7f3d0; /* Light green text */
       }
 
       @keyframes fadeIn {
         from {
           opacity: 0;
+          transform: translateY(5px);
         }
         to {
           opacity: 1;
+          transform: translateY(0);
         }
       }
 
       .check-button {
         padding: 1rem 2.2rem;
         border-radius: 0.75rem;
-        background-image: linear-gradient(to right, #4f46e5, #6366f1);
+        background: linear-gradient(
+          135deg,
+          #4f46e5,
+          #7c3aed
+        ); /* Indigo to violet gradient */
         color: white;
         font-weight: 700;
         font-size: 1.1rem;
         cursor: pointer;
         border: none;
         outline: none;
-        box-shadow: 0 5px 9px -3px rgba(0, 0, 0, 0.15),
-          0 2px 5px -2px rgba(0, 0, 0, 0.07);
-        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out,
-          background-image 0.3s ease-in-out;
+        box-shadow:
+          0 6px 12px -3px rgba(0, 0, 0, 0.25),
+          0 3px 8px -2px rgba(0, 0, 0, 0.15);
+        transition:
+          transform 0.2s ease-in-out,
+          box-shadow 0.2s ease-in-out,
+          background 0.3s ease-in-out;
+        font-family: "Inter", sans-serif;
       }
 
       .check-button:hover {
-        transform: scale(1.06);
-        box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.2),
-          0 3px 7px -2px rgba(0, 0, 0, 0.1);
-        background-image: linear-gradient(to right, #4338ca, #4f46e5);
+        transform: translateY(-2px);
+        box-shadow:
+          0 8px 15px -3px rgba(0, 0, 0, 0.3),
+          0 4px 10px -2px rgba(0, 0, 0, 0.2);
+        background: linear-gradient(
+          135deg,
+          #4338ca,
+          #6d28d9
+        ); /* Darker gradient on hover */
       }
 
       .check-button:active {
-        transform: scale(1);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        background-image: linear-gradient(to right, #4338ca, #4f46e5);
+        transform: translateY(1px);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        background: linear-gradient(
+          135deg,
+          #3730a3,
+          #5b21b6
+        ); /* Even darker on active */
       }
 
       .toggle-container {
         display: flex;
         align-items: center;
-        margin-bottom: 2rem;
+        margin-bottom: 1.5rem; /* Reduced margin */
+        justify-content: center; /* Center toggle */
       }
 
       .toggle-label {
         margin-right: 1rem;
-        color: #4b5563;
+        color: #cbd5e1; /* Light gray text */
         font-size: 1.1rem;
         font-weight: 600;
+        white-space: nowrap; /* Prevent label wrapping */
       }
 
       .toggle-switch {
         position: relative;
         display: inline-block;
-        width: 60px;
+        width: 64px; /* Slightly wider */
         height: 34px;
       }
 
@@ -207,10 +266,11 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: #ccc;
+        background: rgba(148, 163, 184, 0.4); /* Muted background */
         -webkit-transition: 0.4s;
         transition: 0.4s;
         border-radius: 34px;
+        border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
       }
 
       .slider:before {
@@ -224,32 +284,64 @@
         -webkit-transition: 0.4s;
         transition: 0.4s;
         border-radius: 50%;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Shadow for handle */
       }
 
       input:checked + .slider {
-        background-color: #3b82f6;
+        background: rgba(
+          99,
+          102,
+          241,
+          0.6
+        ); /* Indigo background when checked */
       }
 
       input:focus + .slider {
-        box-shadow: 0 0 1px #3b82f6;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3); /* Focus ring */
       }
 
       input:checked + .slider:before {
-        -webkit-transform: translateX(26px);
-        -ms-transform: translateX(26px);
-        transform: translateX(26px);
+        -webkit-transform: translateX(30px); /* Adjust for wider switch */
+        -ms-transform: translateX(30px);
+        transform: translateX(30px);
+      }
+
+      table.answer-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+        background: transparent; /* Transparent table background */
+      }
+
+      table.answer-table th,
+      table.answer-table td {
+        padding: 0.5rem;
+        text-align: center;
+        color: #e2e8f0; /* Light text */
+        border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle cell borders */
+      }
+
+      table.answer-table th {
+        background: rgba(0, 0, 0, 0.2); /* Darker header background */
+        font-weight: 600;
+      }
+
+      table.answer-table tr:nth-child(even) {
+        background: rgba(255, 255, 255, 0.05); /* Alternating row color */
       }
     </style>
   </head>
-  <body class="bg-gradient-to-r from-blue-100 to-purple-100">
+  <body class="bg-gradient-to-br from-blue-900 via-purple-900 to-emerald-900">
     <div class="container">
       <div class="quiz-container">
-        <h1 class="text-3xl font-semibold text-blue-700 mb-8 text-center">
-          Letter-Number Quiz
+        <h1
+          class="text-3xl font-bold text-white mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-300 to-purple-300"
+        >
+          Modern Letter-Number Quiz
         </h1>
 
         <div class="toggle-container">
-          <label class="toggle-label">Enable Timer</label>
+          <label class="toggle-label">Enable 5s Timer</label>
           <label class="toggle-switch">
             <input type="checkbox" id="timerToggle" />
             <span class="slider"></span>
@@ -257,28 +349,32 @@
         </div>
 
         <div class="input-group">
-          <label for="letterInput">Enter the number for letter:</label>
+          <label for="letterInput"
+            >What number corresponds to this letter?</label
+          >
           <p
             id="questionLetter"
-            class="text-6xl font-bold uppercase text-indigo-600 text-center mt-4"
+            class="text-7xl md:text-8xl font-bold uppercase text-cyan-100 text-center mt-2 tracking-wider font-mono"
           ></p>
           <input
             type="text"
             id="letterInput"
-            placeholder="Enter number..."
-            class="w-full mt-4"
+            placeholder="Enter number (1-26)..."
+            class="w-full mt-4 bg-gray-800 text-white border-gray-600 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-300"
           />
         </div>
 
         <p id="warning" class="warning-message" style="display: none"></p>
 
-        <div class="flex items-center justify-center">
-          <button id="checkButton" class="check-button">Check Answer</button>
+        <div class="flex items-center justify-center mt-4">
+          <button id="checkButton" class="check-button">Submit Answer</button>
         </div>
       </div>
 
       <div id="answerSheet" class="text-center">
-        <h3>Answer Sheet (Hover to View)</h3>
+        <h3 class="text-xl font-semibold text-white mb-4">
+          Answer Sheet (Hover to Reveal)
+        </h3>
         <table class="answer-table">
           <thead>
             <tr>
@@ -289,6 +385,7 @@
             </tr>
           </thead>
           <tbody>
+            <!-- Rows remain the same -->
             <tr>
               <td>A</td>
               <td>1</td>
@@ -380,7 +477,6 @@
       const timerToggle = document.getElementById("timerToggle");
 
       let currentLetter = "";
-      let askedLetters = [];
       let timerInterval;
       let timeLeft = 5;
       let timerEnabled = false;
@@ -459,16 +555,20 @@
             const expected = letterToNumber[currentLetter];
             const hint = letterHints[currentLetter];
             warning.textContent = `⏰ Time Up! ${currentLetter.toUpperCase()} = ${expected}. Hint: ${hint}`;
+            warning.classList.remove("bg-red-100");
+            warning.classList.add("bg-green-100"); // Using green style for time up too
             warning.style.display = "block";
             letterInput.value = "";
-            nextQuestion();
+            setTimeout(nextQuestion, 2000); // Move to next question after delay
           }
         }, 1000);
       }
 
       function nextQuestion() {
+        clearInterval(timerInterval); // Clear existing timer if any
         currentLetter = getRandomLetter();
         questionLetterDisplay.textContent = currentLetter.toUpperCase();
+        warning.style.display = "none"; // Hide warning on new question
         if (timerEnabled) startTimer();
       }
 
@@ -478,6 +578,8 @@
         if (!userInput || isNaN(userInput) || userInput < 1 || userInput > 26) {
           warning.textContent =
             "❌ Please enter a valid number between 1 and 26.";
+          warning.classList.remove("bg-green-100");
+          warning.classList.add("bg-red-100");
           warning.style.display = "block";
           letterInput.value = "";
           return;
@@ -485,12 +587,18 @@
 
         const expected = letterToNumber[currentLetter];
         if (userInput === expected) {
+          // Prepare the correct message but don't show it visibly
           warning.textContent = "✅ Correct!";
           warning.classList.remove("bg-red-100");
           warning.classList.add("bg-green-100");
-          warning.style.display = "block";
+          warning.style.display = "none"; // Hide the feedback instantly
           letterInput.value = "";
-          nextQuestion();
+
+          // Move to next question after a short delay
+          setTimeout(() => {
+            warning.style.display = "none"; // Ensure it stays hidden
+            nextQuestion();
+          }, 100); // Very short delay for smooth transition
         } else {
           const hint = letterHints[currentLetter];
           warning.textContent = `❌ Wrong! ${currentLetter.toUpperCase()} = ${expected}. Hint: ${hint}`;
@@ -498,7 +606,10 @@
           warning.classList.add("bg-red-100");
           warning.style.display = "block";
           letterInput.value = "";
-          nextQuestion();
+          setTimeout(() => {
+            warning.style.display = "none"; // Clear feedback after delay
+            nextQuestion();
+          }, 2500); // Delay before next question on wrong answer
         }
       }
 
@@ -510,8 +621,11 @@
 
       timerToggle.addEventListener("change", () => {
         timerEnabled = timerToggle.checked;
-        if (timerEnabled) startTimer();
-        else clearInterval(timerInterval);
+        if (timerEnabled && document.querySelector(".quiz-container")) {
+          startTimer(); // Start immediately if enabled
+        } else {
+          clearInterval(timerInterval); // Stop if disabled
+        }
       });
 
       // Initialize
