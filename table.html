@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -153,9 +153,8 @@
         }
 
         const q = questions[currentQuestion];
-        document.getElementById(
-          "questionBox"
-        ).innerText = `What is ${q.a} × ${q.b}?`;
+        document.getElementById("questionBox").innerText =
+          `What is ${q.a} × ${q.b}?`;
         document.getElementById("answerInput").focus();
       }
 
@@ -170,15 +169,13 @@
           document.getElementById("resultBox").className = "result correct";
           correctAnswers++;
         } else {
-          document.getElementById(
-            "resultBox"
-          ).innerText = `❌ Wrong! Correct answer is ${q.a * q.b}`;
+          document.getElementById("resultBox").innerText =
+            `❌ Wrong! Correct answer is ${q.a * q.b}`;
           document.getElementById("resultBox").className = "result wrong";
         }
 
-        document.getElementById(
-          "scoreBox"
-        ).innerText = `Score: ${correctAnswers}/${questions.length}`;
+        document.getElementById("scoreBox").innerText =
+          `Score: ${correctAnswers}/${questions.length}`;
 
         currentQuestion++;
         document.getElementById("answerInput").value = "";
