@@ -50,9 +50,11 @@
         flex-direction: column;
         align-items: center;
         min-height: 100vh;
-        padding: 2rem;
+        padding: 1.5rem;
         box-sizing: border-box;
-        gap: 2rem; /* Space between main elements */
+        gap: 2rem;
+        max-width: 1400px;
+        margin: 0 auto;
       }
 
       @media (min-width: 768px) {
@@ -63,12 +65,14 @@
           padding: 3rem; /* More padding on larger screens */
         }
         #answerSheet {
-          width: 40%; /* Adjust width for side-by-side layout */
+          flex: 1;
+          max-width: 450px;
           margin-top: 0;
           margin-left: 2rem; /* Space between quiz and sheet */
         }
         .quiz-container {
-          width: 45%; /* Adjust width for side-by-side layout */
+          flex: 1;
+          max-width: 600px;
         }
       }
 
@@ -81,7 +85,6 @@
           0 4px 10px -5px rgba(0, 0, 0, 0.1);
         padding: 2.5rem;
         width: 100%;
-        max-width: 36rem;
         transition:
           transform 0.3s ease-in-out,
           box-shadow 0.3s ease-in-out;
@@ -155,23 +158,29 @@
       }
 
       .warning-message {
-        color: #fca5a5; /* Light red text */
+        color: #ffffff; /* White text for high contrast */
         font-size: 0.95rem; /* Slightly larger */
         font-style: normal; /* Normal font style */
         margin-top: 1rem;
         padding: 0.8rem 1rem; /* Adjusted padding */
-        background: rgba(239, 68, 68, 0.15); /* Reddish background */
+        background: rgba(140, 80, 20, 0.4); /* Amber/Brownish for general warning */
         border-radius: 0.5rem;
-        border: 1px solid rgba(239, 68, 68, 0.3); /* Reddish border */
+        border: 1px solid rgba(255, 255, 255, 0.2); /* White border for glass effect */
         animation: fadeIn 0.3s ease-in-out;
         backdrop-filter: blur(5px); /* Slight blur inside warning */
         text-align: center; /* Center text */
       }
 
       .warning-message.bg-green-100 {
-        background: rgba(34, 197, 94, 0.15); /* Greenish background */
-        border-color: rgba(34, 197, 94, 0.3); /* Greenish border */
-        color: #a7f3d0; /* Light green text */
+        background: rgba(22, 101, 52, 0.6); /* Darker green for success */
+        border-color: rgba(255, 255, 255, 0.2);
+        color: #ffffff;
+      }
+
+      .warning-message.bg-orange-100 {
+        background: rgba(243, 156, 18, 0.5); /* Brighter orange for errors */
+        border-color: rgba(255, 255, 255, 0.2);
+        color: #ffffff;
       }
 
       @keyframes fadeIn {
@@ -375,97 +384,99 @@
         <h3 class="text-xl font-semibold text-white mb-4">
           Answer Sheet (Hover to Reveal)
         </h3>
-        <table class="answer-table">
-          <thead>
-            <tr>
-              <th>Letter</th>
-              <th>Number</th>
-              <th>Letter</th>
-              <th>Number</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Rows remain the same -->
-            <tr>
-              <td>A</td>
-              <td>1</td>
-              <td>N</td>
-              <td>14</td>
-            </tr>
-            <tr>
-              <td>B</td>
-              <td>2</td>
-              <td>O</td>
-              <td>15</td>
-            </tr>
-            <tr>
-              <td>C</td>
-              <td>3</td>
-              <td>P</td>
-              <td>16</td>
-            </tr>
-            <tr>
-              <td>D</td>
-              <td>4</td>
-              <td>Q</td>
-              <td>17</td>
-            </tr>
-            <tr>
-              <td>E</td>
-              <td>5</td>
-              <td>R</td>
-              <td>18</td>
-            </tr>
-            <tr>
-              <td>F</td>
-              <td>6</td>
-              <td>S</td>
-              <td>19</td>
-            </tr>
-            <tr>
-              <td>G</td>
-              <td>7</td>
-              <td>T</td>
-              <td>20</td>
-            </tr>
-            <tr>
-              <td>H</td>
-              <td>8</td>
-              <td>U</td>
-              <td>21</td>
-            </tr>
-            <tr>
-              <td>I</td>
-              <td>9</td>
-              <td>V</td>
-              <td>22</td>
-            </tr>
-            <tr>
-              <td>J</td>
-              <td>10</td>
-              <td>W</td>
-              <td>23</td>
-            </tr>
-            <tr>
-              <td>K</td>
-              <td>11</td>
-              <td>X</td>
-              <td>24</td>
-            </tr>
-            <tr>
-              <td>L</td>
-              <td>12</td>
-              <td>Y</td>
-              <td>25</td>
-            </tr>
-            <tr>
-              <td>M</td>
-              <td>13</td>
-              <td>Z</td>
-              <td>26</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="table-wrapper">
+          <table class="answer-table">
+            <thead>
+              <tr>
+                <th>Letter</th>
+                <th>Number</th>
+                <th>Letter</th>
+                <th>Number</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Rows remain the same -->
+              <tr>
+                <td>A</td>
+                <td>1</td>
+                <td>N</td>
+                <td>14</td>
+              </tr>
+              <tr>
+                <td>B</td>
+                <td>2</td>
+                <td>O</td>
+                <td>15</td>
+              </tr>
+              <tr>
+                <td>C</td>
+                <td>3</td>
+                <td>P</td>
+                <td>16</td>
+              </tr>
+              <tr>
+                <td>D</td>
+                <td>4</td>
+                <td>Q</td>
+                <td>17</td>
+              </tr>
+              <tr>
+                <td>E</td>
+                <td>5</td>
+                <td>R</td>
+                <td>18</td>
+              </tr>
+              <tr>
+                <td>F</td>
+                <td>6</td>
+                <td>S</td>
+                <td>19</td>
+              </tr>
+              <tr>
+                <td>G</td>
+                <td>7</td>
+                <td>T</td>
+                <td>20</td>
+              </tr>
+              <tr>
+                <td>H</td>
+                <td>8</td>
+                <td>U</td>
+                <td>21</td>
+              </tr>
+              <tr>
+                <td>I</td>
+                <td>9</td>
+                <td>V</td>
+                <td>22</td>
+              </tr>
+              <tr>
+                <td>J</td>
+                <td>10</td>
+                <td>W</td>
+                <td>23</td>
+              </tr>
+              <tr>
+                <td>K</td>
+                <td>11</td>
+                <td>X</td>
+                <td>24</td>
+              </tr>
+              <tr>
+                <td>L</td>
+                <td>12</td>
+                <td>Y</td>
+                <td>25</td>
+              </tr>
+              <tr>
+                <td>M</td>
+                <td>13</td>
+                <td>Z</td>
+                <td>26</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
 
@@ -555,7 +566,7 @@
             const expected = letterToNumber[currentLetter];
             const hint = letterHints[currentLetter];
             warning.textContent = `⏰ Time Up! ${currentLetter.toUpperCase()} = ${expected}. Hint: ${hint}`;
-            warning.classList.remove("bg-red-100");
+            warning.classList.remove("bg-orange-100");
             warning.classList.add("bg-green-100"); // Using green style for time up too
             warning.style.display = "block";
             letterInput.value = "";
@@ -569,7 +580,7 @@
         currentLetter = getRandomLetter();
         questionLetterDisplay.textContent = currentLetter.toUpperCase();
         warning.style.display = "none"; // Hide warning on new question
-        if (timerEnabled) startTimer();
+        if (timerEnabled) startTimer(); // Start immediately if enabled
       }
 
       function checkAnswer() {
@@ -579,7 +590,7 @@
           warning.textContent =
             "❌ Please enter a valid number between 1 and 26.";
           warning.classList.remove("bg-green-100");
-          warning.classList.add("bg-red-100");
+          warning.classList.add("bg-orange-100");
           warning.style.display = "block";
           letterInput.value = "";
           return;
@@ -589,7 +600,7 @@
         if (userInput === expected) {
           // Prepare the correct message but don't show it visibly
           warning.textContent = "✅ Correct!";
-          warning.classList.remove("bg-red-100");
+          warning.classList.remove("bg-orange-100");
           warning.classList.add("bg-green-100");
           warning.style.display = "none"; // Hide the feedback instantly
           letterInput.value = "";
@@ -603,7 +614,7 @@
           const hint = letterHints[currentLetter];
           warning.textContent = `❌ Wrong! ${currentLetter.toUpperCase()} = ${expected}. Hint: ${hint}`;
           warning.classList.remove("bg-green-100");
-          warning.classList.add("bg-red-100");
+          warning.classList.add("bg-orange-100");
           warning.style.display = "block";
           letterInput.value = "";
           setTimeout(() => {
