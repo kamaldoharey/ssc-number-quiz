@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>25×25 · unlimited multiplication quiz</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: linear-gradient(145deg, #f1f7fe 0%, #e3ecf7 100%);
+      font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem 1rem;
+    }
+
+    .quiz-card {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(4px);
+      border-radius: 3rem;
+      box-shadow: 0 25px 40px -12px rgba(0, 30, 70, 0.3), 0 10px 20px -10px rgba(0, 0, 0, 0.1);
+      padding: 2.2rem 2rem 2rem 2rem;
+      max-width: 750px;
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      color: #0c2e4e;
+      margin-bottom: 1.2rem;
+    }
+
+    h1 span {
+      background: #d7e6ff;
+      color: #0c2e4e;
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 0.35rem 1.2rem;
+      border-radius: 60px;
+      border: 1px solid #ffffff;
+    }
+
+    .progress-area {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #e7f0fe;
+      border-radius: 60px;
+      padding: 0.5rem 1.2rem;
+      margin-bottom: 2rem;
+      font-weight: 500;
+      color: #1f3a5e;
+      border: 1px solid #c6d9f5;
+      flex-wrap: wrap;
+      gap: 0.6rem 1rem;
+    }
+
+    .score-badge, .streak {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #ffffffcc;
+      padding: 0.2rem 0.9rem;
+      border-radius: 40px;
+      font-size: 0.95rem;
+    }
+
+    .question-container {
+      background: #ffffff;
+      border-radius: 2rem;
+      padding: 2.2rem 1.8rem;
+      margin-bottom: 1.8rem;
+      box-shadow: inset 0 8px 18px -8px rgba(0, 20, 40, 0.08), 0 8px 18px -8px rgba(0, 0, 0, 0.05);
+      border: 1px solid #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .question-text {
+      font-size: 3.8rem;
+      font-weight: 700;
+      color: #10365c;
+      letter-spacing: 4px;
+      line-height: 1.2;
+      margin-bottom: 1.2rem;
+      text-shadow: 0 2px 6px rgba(140, 170, 220, 0.2);
+      text-align: center;
+      word-break: break-word;
+    }
+
+    .answer-area {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .answer-input {
+      flex: 1 1 180px;
+      padding: 1rem 1.4rem;
+      font-size: 1.8rem;
+      font-weight: 600;
+      text-align: center;
+      border: 3px solid #cddef5;
+      border-radius: 60px;
+      outline: none;
+      background: #fafdff;
+      color: #10365c;
+      font-family: inherit;
+      transition: all 0.1s;
+      min-width: 0;
+    }
+
+    .answer-input:focus {
+      border-color: #4b7bc4;
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(75, 123, 196, 0.15);
+    }
+
+    .answer-input::placeholder {
+      font-weight: 400;
+      font-size: 1.2rem;
+      color: #9bb2d0;
+    }
+
+    .answer-input.shake {
+      animation: shake 0.3s ease-in-out;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-6px); }
+      75% { transform: translateX(6px); }
+    }
+
+    .btn {
+      border: none;
+      background: #ffffff;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 1.1rem;
+      padding: 0.9rem 2rem;
+      border-radius: 60px;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      border: 1px solid #d7e4f7;
+      color: #1f3a5e;
+      flex: 0 0 auto;
+    }
+
+    .btn-primary {
+      background: #1f4d8c;
+      color: white;
+      border: none;
+      padding: 0.9rem 2.6rem;
+    }
+
+    .btn-primary:hover {
+      background: #143b6e;
+      transform: scale(1.01);
+    }
+
+    .btn-primary:active {
+      background: #0e2e54;
+      transform: scale(0.99);
+    }
+
+    .btn-secondary {
+      background: #e8f0fe;
+      border: 1px solid #b7cef0;
+    }
+
+    .btn-secondary:hover {
+      background: #d7e5fc;
+    }
+
+    .feedback {
+      min-height: 3rem;
+      font-size: 1.2rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1.2rem;
+      padding: 0.6rem;
+      border-radius: 60px;
+      text-align: center;
+      flex-wrap: wrap;
+    }
+
+    .feedback.correct { color: #146c43; background: #e1f7e9; }
+    .feedback.incorrect { color: #b13838; background: #fee9e9; }
+    .feedback.neutral { color: #4a6382; background: #f1f6fe; }
+
+    .history-hint {
+      font-size: 0.9rem;
+      color: #6d86a8;
+      margin-top: 1.2rem;
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      border-top: 1px solid #d7e2f5;
+      padding-top: 1.2rem;
+    }
+
+    .history-hint kbd {
+      background: #eef3fc;
+      padding: 0.2rem 0.7rem;
+      border-radius: 30px;
+      font-family: inherit;
+      font-weight: 500;
+      font-size: 0.85rem;
+      color: #1f3a5e;
+      border: 1px solid #cadef5;
+    }
+
+    @media (max-width: 550px) {
+      .quiz-card { padding: 1.5rem 1.2rem; border-radius: 2rem; }
+      .question-text { font-size: 2.6rem; letter-spacing: 2px; }
+      .answer-input { font-size: 1.5rem; padding: 0.8rem 1rem; }
+      .btn { font-size: 1rem; padding: 0.7rem 1.4rem; }
+      .btn-primary { padding: 0.8rem 2rem; }
+      h1 { font-size: 1.5rem; }
+    }
+
+    @media (max-width: 380px) {
+      .answer-area { flex-direction: column; }
+      .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-card">
+    <h1>⚡ 25×25 quiz <span>unlimited</span></h1>
+
+    <div class="progress-area">
+      <div class="score-badge"><span>✅</span> <span id="scoreDisplay">0</span></div>
+      <div class="streak"><span>🔥</span> <span id="streakDisplay">0</span></div>
+      <div class="streak" style="background:#ffffffdd;"><span>📋</span> <span id="totalDisplay">0</span></div>
+    </div>
+
+    <div class="question-container">
+      <div class="question-text" id="questionText">4 × 7</div>
+      <div class="answer-area">
+        <input type="number" id="answerInput" class="answer-input" placeholder="?" inputmode="numeric" autofocus>
+        <button class="btn btn-primary" id="submitBtn">Check</button>
+        <button class="btn btn-secondary" id="skipBtn">Skip</button>
+      </div>
+      <div id="feedbackMessage" class="feedback neutral">type your answer and press Enter</div>
+    </div>
+
+    <div class="history-hint">
+      <span><kbd>Enter</kbd> submits answer / next question</span>
+      <span><kbd>Skip</kbd> reveals answer</span>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const MIN_FACTOR = 1;
+      const MAX_FACTOR = 25;
+
+      const questionEl   = document.getElementById('questionText');
+      const answerInput  = document.getElementById('answerInput');
+      const submitBtn    = document.getElementById('submitBtn');
+      const skipBtn      = document.getElementById('skipBtn');
+      const feedbackEl   = document.getElementById('feedbackMessage');
+      const scoreDisplay = document.getElementById('scoreDisplay');
+      const streakDisplay= document.getElementById('streakDisplay');
+      const totalDisplay = document.getElementById('totalDisplay');
+
+      let currentA = 1, currentB = 1, currentAnswer = 0;
+      let solved = false;   // true once correct OR skipped
+      let score = 0, streak = 0, totalAttempts = 0;
+
+      function randomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
+      function updateStats() {
+        scoreDisplay.textContent  = score;
+        streakDisplay.textContent = streak;
+        totalDisplay.textContent  = totalAttempts;
+      }
+
+      function setFeedback(text, type = 'neutral') {
+        feedbackEl.textContent = text;
+        feedbackEl.className   = `feedback ${type}`;
+      }
+
+      function generateNewQuestion() {
+        currentA = randomInt(MIN_FACTOR, MAX_FACTOR);
+        currentB = randomInt(MIN_FACTOR, MAX_FACTOR);
+        currentAnswer = currentA * currentB;
+        questionEl.textContent = `${currentA} × ${currentB}`;
+        answerInput.value = '';
+        answerInput.readOnly = false;
+        answerInput.classList.remove('shake');
+        solved = false;
+        setFeedback('your turn', 'neutral');
+        answerInput.focus();
+      }
+
+      function advanceToNextQuestion() {
+        generateNewQuestion();
+        updateStats();
+      }
+
+      // Checks the typed answer. Returns true if the question just became solved
+      // (correct) — false otherwise (wrong / invalid).
+      function checkAnswer() {
+        const rawValue = answerInput.value.trim();
+        if (rawValue === '') {
+          setFeedback('✏️ enter a number', 'neutral');
+          answerInput.focus();
+          return false;
+        }
+
+        const userAnswer = Number(rawValue);
+        if (isNaN(userAnswer) || !Number.isInteger(userAnswer)) {
+          setFeedback('🔢 whole numbers only', 'neutral');
+          answerInput.value = '';
+          answerInput.focus();
+          return false;
+        }
+
+        totalAttempts += 1;
+
+        if (userAnswer === currentAnswer) {
+          solved = true;
+          score += 1;
+          streak += 1;
+          setFeedback(
+            `✅ correct!  ${currentA} × ${currentB} = ${currentAnswer}  —  press Enter for next`,
+            'correct'
+          );
+          updateStats();
+          answerInput.readOnly = true;
+          answerInput.focus();
+          return true;
+        } else {
+          streak = 0;
+          setFeedback(
+            `❌ incorrect — try again: ${currentA} × ${currentB} = ?`,
+            'incorrect'
+          );
+          updateStats();
+          answerInput.classList.add('shake');
+          setTimeout(() => answerInput.classList.remove('shake'), 350);
+          answerInput.value = '';
+          answerInput.focus();
+          return false;
+        }
+      }
+
+      function handleSkip() {
+        if (solved) {
+          advanceToNextQuestion();
+          return;
+        }
+        solved = true;
+        streak = 0;
+        setFeedback(
+          `⏭️ answer: ${currentA} × ${currentB} = ${currentAnswer}  —  press Enter for next`,
+          'neutral'
+        );
+        updateStats();
+        answerInput.value = '';
+        answerInput.readOnly = true;
+        answerInput.focus();
+      }
+
+      // -------- Enter handler (single-press next question) --------
+      answerInput.addEventListener('keydown', (e) => {
+        if (e.key !== 'Enter') return;
+        e.preventDefault();
+
+        // If the current question is already solved → Enter goes straight to next.
+        if (solved) {
+          advanceToNextQuestion();
+          return;
+        }
+
+        // Otherwise Enter submits the answer. If the answer is correct,
+        // we IMMEDIATELY advance to a fresh question in the same Enter press.
+        const justSolved = checkAnswer();
+        if (justSolved) {
+          advanceToNextQuestion();
+        }
+      });
+
+      submitBtn.addEventListener('click', () => {
+        if (solved) {
+          advanceToNextQuestion();
+          return;
+        }
+        const justSolved = checkAnswer();
+        if (justSolved) {
+          advanceToNextQuestion();
+        }
+      });
+
+      skipBtn.addEventListener('click', handleSkip);
+
+      // init
+      (function init() {
+        score = 0; streak = 0; totalAttempts = 0;
+        updateStats();
+        generateNewQuestion();
+      })();
+    })();
+  </script>
+</body>
+</html>
